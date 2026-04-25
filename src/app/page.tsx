@@ -1,6 +1,6 @@
 "use client";
 
-import ThemeSwitcher from "@/components/ThemeSwitcher";
+import PixelTitle from "@/components/PixelTitle";
 import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Home() {
@@ -23,30 +23,25 @@ export default function Home() {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "14px",
-          alignItems: "flex-start",
-          border: `1px solid ${theme.colors.border}`,
-          backgroundColor: theme.colors.bgSecondary,
-          borderRadius: "12px",
-          padding: "20px",
-          width: "100%",
-          maxWidth: "560px",
+          gap: "12px",
+          alignItems: "center",
+          textAlign: "center",
         }}
       >
+        <PixelTitle theme={theme} />
         <h1
           style={{
             margin: 0,
             color: theme.colors.primary,
-            fontSize: "22px",
+            fontSize: "20px",
             letterSpacing: "0.02em",
           }}
         >
           Active Theme: {themeName}
         </h1>
         <p style={{ margin: 0, color: theme.colors.textDim, fontSize: "13px" }}>
-          Theme system test view (temporary for Phase 2).
+          {theme.description}
         </p>
-        <ThemeSwitcher />
       </div>
     </main>
   );
