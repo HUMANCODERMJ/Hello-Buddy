@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "name": "NeuralChat",
+      "description": "AI-powered chat platform with real-time translation & sentiment analysis",
+      "tech": ["Next.js", "OpenAI", "WebSockets", "Redis"],
+      "status": "live",
+      "url": "github.com/buddy/neuralchat"
+    },
+    {
+      "name": "CodeCanvas",
+      "description": "Collaborative code editor with AI-assisted pair programming",
+      "tech": ["React", "Monaco Editor", "Node.js", "Claude API"],
+      "status": "live",
+      "url": "github.com/buddy/codecanvas"
+    },
+    {
+      "name": "PixelForge",
+      "description": "Generative art tool powered by diffusion models & WebGL",
+      "tech": ["Three.js", "Stable Diffusion", "FastAPI", "WebGL"],
+      "status": "beta",
+      "url": "github.com/buddy/pixelforge"
+    },
+    {
+      "name": "TaskFlow",
+      "description": "Minimalist task manager with natural language processing",
+      "tech": ["Next.js", "Prisma", "PostgreSQL", "NLP"],
+      "status": "live",
+      "url": "github.com/buddy/taskflow"
+    }
+  ]
+}

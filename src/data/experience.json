@@ -1,0 +1,36 @@
+{
+  "jobs": [
+    {
+      "role": "Senior Full Stack Developer",
+      "company": "TechCorp India",
+      "period": "2023 – Present",
+      "location": "Bangalore, India",
+      "highlights": [
+        "Led development of a real-time analytics dashboard (50K+ users)",
+        "Reduced API response times by 60% via caching & query optimization",
+        "Mentored 4 junior developers and established code review culture"
+      ]
+    },
+    {
+      "role": "Full Stack Developer",
+      "company": "StartupXYZ",
+      "period": "2021 – 2023",
+      "location": "Remote",
+      "highlights": [
+        "Built an AI-powered recommendation engine using Python & LangChain",
+        "Architected microservices handling 1M+ daily requests",
+        "Shipped 12+ features end-to-end from design to deployment"
+      ]
+    },
+    {
+      "role": "Frontend Developer Intern",
+      "company": "DigitalAgency",
+      "period": "2020 – 2021",
+      "location": "Delhi, India",
+      "highlights": [
+        "Developed responsive UIs for 5 client projects using React",
+        "Improved page load performance by 40% across client sites"
+      ]
+    }
+  ]
+}

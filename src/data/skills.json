@@ -1,0 +1,28 @@
+{
+  "categories": [
+    {
+      "name": "Frontend",
+      "items": ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"]
+    },
+    {
+      "name": "Backend",
+      "items": ["Node.js", "Python", "FastAPI", "Express.js", "GraphQL"]
+    },
+    {
+      "name": "Database",
+      "items": ["PostgreSQL", "MongoDB", "Redis", "Prisma", "Supabase"]
+    },
+    {
+      "name": "AI / ML",
+      "items": ["LangChain", "OpenAI API", "Claude API", "HuggingFace"]
+    },
+    {
+      "name": "DevOps",
+      "items": ["Docker", "GitHub Actions", "Vercel", "AWS", "Linux"]
+    },
+    {
+      "name": "Tools",
+      "items": ["Git", "VS Code", "Figma", "Postman"]
+    }
+  ]
+}
