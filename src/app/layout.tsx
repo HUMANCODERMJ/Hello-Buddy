@@ -15,6 +15,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+function setVh() {
+  document.documentElement.style.setProperty('--app-vh', window.innerHeight + 'px');
+}
+setVh();
+window.addEventListener('resize', setVh);
+`,
+          }}
+        />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
