@@ -59,3 +59,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #4a3a6e;
 }
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -3,10 +3,16 @@
 import { useEffect, useState } from "react";
 import PixelTitle from "@/components/PixelTitle";
 import OutputRenderer from "@/components/OutputRenderer";
+import BlogGrid from "@/components/blog/BlogGrid";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useView } from "@/contexts/ViewContext";
 import useTerminal from "@/hooks/useTerminal";
+import type { BlogPost } from "@/lib/blog";
 import { PORTFOLIO } from "@/lib/commands";
+
+interface TerminalProps {
+  posts: BlogPost[];
+}
 
 const SOCIAL_LINKS = {
   github: "https://github.com/buddy",
@@ -14,9 +20,9 @@ const SOCIAL_LINKS = {
   linkedin: "https://linkedin.com/in/hibuddy",
 };
 
-export default function Terminal() {
+export default function Terminal({ posts }: TerminalProps) {
   const { theme } = useTheme();
-  const { viewMode, exitToBlogGrid, exitToTerminal } = useView();
+  const { viewMode, openBlogArticle, exitToBlogGrid, exitToTerminal } = useView();
   const { history, input, setInput, handleKeyDown, inputRef, bottomRef, focusInput } =
     useTerminal();
   const [time, setTime] = useState("");
@@ -364,18 +370,28 @@ export default function Terminal() {
               flexDirection: "column",
             }}
           >
-            <div
-              style={{
-                flex: 1,
-                overflowY: "auto",
-                padding: "24px 28px",
-                color: theme.colors.textMuted,
-                fontFamily: "inherit",
-              }}
-            >
-              {viewMode === "blog-grid" && <p>[ Blog grid coming in Phase C ]</p>}
-              {viewMode === "blog-article" && <p>[ Blog article coming in Phase D ]</p>}
-            </div>
+            {viewMode === "blog-grid" && (
+              <BlogGrid
+                posts={posts}
+                theme={theme}
+                onSelectPost={(slug) => openBlogArticle(slug)}
+                onBack={exitToTerminal}
+              />
+            )}
+
+            {viewMode === "blog-article" && (
+              <div
+                style={{
+                  flex: 1,
+                  overflowY: "auto",
+                  padding: "24px 28px",
+                  color: theme.colors.textMuted,
+                  fontFamily: "inherit",
+                }}
+              >
+                <p>[ Blog article coming in Phase D ]</p>
+              </div>
+            )}
 
             <div
               style={{
