@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import BlogCard from "@/components/blog/BlogCard";
 import type { BlogPost } from "@/lib/blog";
 import type { Theme } from "@/lib/themes";
@@ -12,6 +13,8 @@ export interface BlogGridProps {
 }
 
 export default function BlogGrid({ posts, theme, onSelectPost, onBack }: BlogGridProps) {
+  const router = useRouter();
+
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
       <div
@@ -63,7 +66,10 @@ export default function BlogGrid({ posts, theme, onSelectPost, onBack }: BlogGri
             post={post}
             theme={theme}
             index={index}
-            onClick={() => onSelectPost(post.slug)}
+            onClick={() => {
+              onSelectPost(post.slug);
+              router.push(`/blog/${post.slug}`);
+            }}
           />
         ))}
       </div>
