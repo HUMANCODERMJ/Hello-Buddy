@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { HistoryEntry, OutputBlock } from "@/types";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useView } from "@/contexts/ViewContext";
 import { ALL_COMMAND_NAMES, COMMANDS } from "@/lib/commands";
 
 function makeId(): string {
@@ -11,6 +12,7 @@ function makeId(): string {
 
 export default function useTerminal() {
   const { theme } = useTheme();
+  const { viewMode, openBlogGrid, exitToTerminal, exitToBlogGrid } = useView();
 
   const [history, setHistory] = useState<HistoryEntry[]>([
     { id: "init-banner", kind: "banner" },
@@ -55,6 +57,12 @@ export default function useTerminal() {
       const parts = trimmed.toLowerCase().split(/\s+/);
       const cmdName = parts[0];
       const args = parts.slice(1);
+
+      if (cmdName === "blog") {
+        openBlogGrid();
+        resetInput();
+        return;
+      }
 
       setHistory((prev) => [...prev, { id: makeId(), kind: "input", text: trimmed }]);
 
@@ -108,6 +116,15 @@ export default function useTerminal() {
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Escape") {
+        if (viewMode === "blog-article") {
+          exitToBlogGrid();
+        } else if (viewMode === "blog-grid") {
+          exitToTerminal();
+        }
+        return;
+      }
+
       if (e.key === "Enter") {
         executeCommand(input);
         return;
@@ -163,7 +180,7 @@ export default function useTerminal() {
         return;
       }
     },
-    [input, historyIdx, cmdHistory, executeCommand]
+    [input, historyIdx, cmdHistory, executeCommand, viewMode, exitToTerminal, exitToBlogGrid]
   );
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ViewProvider } from "@/contexts/ViewContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -26,7 +27,9 @@ window.addEventListener('resize', setVh);
 `,
           }}
         />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ViewProvider>{children}</ViewProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

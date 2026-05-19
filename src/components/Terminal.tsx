@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PixelTitle from "@/components/PixelTitle";
 import OutputRenderer from "@/components/OutputRenderer";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useView } from "@/contexts/ViewContext";
 import useTerminal from "@/hooks/useTerminal";
 import { PORTFOLIO } from "@/lib/commands";
 
@@ -15,6 +16,7 @@ const SOCIAL_LINKS = {
 
 export default function Terminal() {
   const { theme } = useTheme();
+  const { viewMode } = useView();
   const { history, input, setInput, handleKeyDown, inputRef, bottomRef, focusInput } =
     useTerminal();
   const [time, setTime] = useState("");
@@ -204,181 +206,243 @@ export default function Terminal() {
           </div>
         </div>
 
-        <div
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "24px 28px",
-            display: "flex",
-            flexDirection: "column",
-            color: theme.colors.text,
-            fontFamily: '"JetBrains Mono", "Fira Code", "Cascadia Code", monospace',
-            fontSize: "0.875rem",
-            cursor: "text",
-            transition: "color 0.35s ease",
-          }}
-          onClick={focusInput}
-        >
-          {history.map((entry) => {
-            if (entry.kind === "banner") {
-              return (
-                <div key={entry.id} style={{ marginBottom: "20px" }}>
-                  <PixelTitle theme={theme} />
-                  <div
-                    style={{
-                      color: theme.colors.text,
-                      fontSize: "0.9rem",
-                      marginTop: "6px",
-                    }}
-                  >
-                    {PORTFOLIO.title}
+        {viewMode === "terminal" && (
+          <div
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              padding: "24px 28px",
+              display: "flex",
+              flexDirection: "column",
+              color: theme.colors.text,
+              fontFamily: '"JetBrains Mono", "Fira Code", "Cascadia Code", monospace',
+              fontSize: "0.875rem",
+              cursor: "text",
+              transition: "color 0.35s ease",
+            }}
+            onClick={focusInput}
+          >
+            {history.map((entry) => {
+              if (entry.kind === "banner") {
+                return (
+                  <div key={entry.id} style={{ marginBottom: "20px" }}>
+                    <PixelTitle theme={theme} />
+                    <div
+                      style={{
+                        color: theme.colors.text,
+                        fontSize: "0.9rem",
+                        marginTop: "6px",
+                      }}
+                    >
+                      {PORTFOLIO.title}
+                    </div>
+                    <div style={{ color: theme.colors.textMuted, fontSize: "0.8rem" }}>
+                      {PORTFOLIO.tagline}
+                    </div>
                   </div>
-                  <div style={{ color: theme.colors.textMuted, fontSize: "0.8rem" }}>
-                    {PORTFOLIO.tagline}
-                  </div>
-                </div>
-              );
-            }
+                );
+              }
 
-            if (entry.kind === "welcome") {
-              return (
-                <div key={entry.id} style={{ marginBottom: "16px" }}>
-                  <div style={{ color: theme.colors.textDim, fontSize: "0.85rem" }}>
-                    Welcome. Type "help" to see available commands.
+              if (entry.kind === "welcome") {
+                return (
+                  <div key={entry.id} style={{ marginBottom: "16px" }}>
+                    <div style={{ color: theme.colors.textDim, fontSize: "0.85rem" }}>
+                      Welcome. Type "help" to see available commands.
+                    </div>
+                    <div
+                      style={{
+                        color: theme.colors.textMuted,
+                        fontSize: "0.78rem",
+                        marginTop: "4px",
+                      }}
+                    >
+                      Use Tab to autocomplete · ↑↓ to navigate history
+                    </div>
                   </div>
+                );
+              }
+
+              if (entry.kind === "input") {
+                return (
                   <div
+                    key={entry.id}
                     style={{
-                      color: theme.colors.textMuted,
-                      fontSize: "0.78rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
                       marginTop: "4px",
                     }}
                   >
-                    Use Tab to autocomplete · ↑↓ to navigate history
+                    <span
+                      style={{
+                        color: theme.colors.prompt,
+                        userSelect: "none",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {PORTFOLIO.username}@{PORTFOLIO.hostname}
+                    </span>
+                    <span style={{ color: theme.colors.textMuted, userSelect: "none" }}>›</span>
+                    <span style={{ color: theme.colors.text }}>{entry.text}</span>
                   </div>
-                </div>
-              );
-            }
+                );
+              }
 
-            if (entry.kind === "input") {
               return (
-                <div
-                  key={entry.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginTop: "4px",
-                  }}
-                >
-                  <span
-                    style={{
-                      color: theme.colors.prompt,
-                      userSelect: "none",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {PORTFOLIO.username}@{PORTFOLIO.hostname}
-                  </span>
-                  <span style={{ color: theme.colors.textMuted, userSelect: "none" }}>›</span>
-                  <span style={{ color: theme.colors.text }}>{entry.text}</span>
+                <div key={entry.id} style={{ marginTop: "2px", marginBottom: "10px" }}>
+                  <OutputRenderer blocks={entry.blocks} theme={theme} />
                 </div>
               );
-            }
+            })}
 
-            return (
-              <div key={entry.id} style={{ marginTop: "2px", marginBottom: "10px" }}>
-                <OutputRenderer blocks={entry.blocks} theme={theme} />
-              </div>
-            );
-          })}
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              marginTop: "8px",
-              paddingBottom: "16px",
-            }}
-          >
-            <span
+            <div
               style={{
-                color: theme.colors.prompt,
-                userSelect: "none",
-                flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginTop: "8px",
+                paddingBottom: "16px",
               }}
             >
-              {PORTFOLIO.username}@{PORTFOLIO.hostname}
-            </span>
-            <span style={{ color: theme.colors.textMuted, userSelect: "none" }}>›</span>
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck={false}
+              <span
+                style={{
+                  color: theme.colors.prompt,
+                  userSelect: "none",
+                  flexShrink: 0,
+                }}
+              >
+                {PORTFOLIO.username}@{PORTFOLIO.hostname}
+              </span>
+              <span style={{ color: theme.colors.textMuted, userSelect: "none" }}>›</span>
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                style={{
+                  flex: 1,
+                  background: "transparent",
+                  border: "none",
+                  outline: "none",
+                  color: theme.colors.text,
+                  fontFamily: "inherit",
+                  fontSize: "inherit",
+                  caretColor: theme.colors.cursor,
+                  padding: 0,
+                }}
+              />
+            </div>
+            <div ref={bottomRef} />
+          </div>
+        )}
+
+        {(viewMode === "blog-grid" || viewMode === "blog-article") && (
+          <div
+            style={{
+              flex: 1,
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div
               style={{
                 flex: 1,
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: theme.colors.text,
+                overflowY: "auto",
+                padding: "24px 28px",
+                color: theme.colors.textMuted,
                 fontFamily: "inherit",
-                fontSize: "inherit",
-                caretColor: theme.colors.cursor,
-                padding: 0,
               }}
-            />
-          </div>
-          <div ref={bottomRef} />
-        </div>
+            >
+              {viewMode === "blog-grid" && <p>[ Blog grid coming in Phase C ]</p>}
+              {viewMode === "blog-article" && <p>[ Blog article coming in Phase D ]</p>}
+            </div>
 
-        <div
-          style={{
-            height: "36px",
-            backgroundColor: theme.colors.bgSecondary,
-            borderTop: `1px solid ${theme.colors.border}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0 16px",
-            flexShrink: 0,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            {[
-              { key: "Tab", label: "complete" },
-              { key: "↑↓", label: "history" },
-              { key: "Ctrl+C", label: "cancel" },
-              { key: "Ctrl+L", label: "clear" },
-            ].map((hint) => (
-              <div key={hint.key} style={{ display: "flex", alignItems: "center" }}>
-                <span
-                  style={{
-                    color: theme.colors.textDim,
-                    border: `1px solid ${theme.colors.border}`,
-                    borderRadius: "3px",
-                    padding: "1px 5px",
-                    fontSize: "0.68rem",
-                    marginRight: "4px",
-                  }}
-                >
-                  {hint.key}
-                </span>
-                <span style={{ color: theme.colors.textMuted, fontSize: "0.68rem" }}>
-                  {hint.label}
-                </span>
-              </div>
-            ))}
+            <div
+              style={{
+                height: "35px",
+                flexShrink: 0,
+                borderTop: `1px solid ${theme.colors.border}`,
+                backgroundColor: theme.colors.bgSecondary,
+                display: "flex",
+                alignItems: "center",
+                padding: "0 16px",
+                gap: "12px",
+              }}
+            >
+              <span
+                style={{
+                  color: theme.colors.prompt,
+                  fontSize: "0.78rem",
+                  fontFamily: "inherit",
+                  userSelect: "none",
+                }}
+              >
+                buddy@portfolio ›
+              </span>
+              <span
+                style={{
+                  color: theme.colors.textMuted,
+                  fontSize: "0.72rem",
+                  fontFamily: "inherit",
+                }}
+              >
+                Press Esc to exit
+              </span>
+            </div>
           </div>
+        )}
 
-          <div style={{ color: theme.colors.textMuted, fontSize: "0.7rem" }}>
-            /help for commands
+        {viewMode === "terminal" && (
+          <div
+            style={{
+              height: "36px",
+              backgroundColor: theme.colors.bgSecondary,
+              borderTop: `1px solid ${theme.colors.border}`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "0 16px",
+              flexShrink: 0,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              {[
+                { key: "Tab", label: "complete" },
+                { key: "↑↓", label: "history" },
+                { key: "Ctrl+C", label: "cancel" },
+                { key: "Ctrl+L", label: "clear" },
+              ].map((hint) => (
+                <div key={hint.key} style={{ display: "flex", alignItems: "center" }}>
+                  <span
+                    style={{
+                      color: theme.colors.textDim,
+                      border: `1px solid ${theme.colors.border}`,
+                      borderRadius: "3px",
+                      padding: "1px 5px",
+                      fontSize: "0.68rem",
+                      marginRight: "4px",
+                    }}
+                  >
+                    {hint.key}
+                  </span>
+                  <span style={{ color: theme.colors.textMuted, fontSize: "0.68rem" }}>
+                    {hint.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ color: theme.colors.textMuted, fontSize: "0.7rem" }}>
+              /help for commands
+            </div>
           </div>
-        </div>
+        )}
+
 
         <div
           style={{
