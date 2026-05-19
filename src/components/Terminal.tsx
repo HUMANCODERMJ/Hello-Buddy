@@ -16,7 +16,7 @@ const SOCIAL_LINKS = {
 
 export default function Terminal() {
   const { theme } = useTheme();
-  const { viewMode } = useView();
+  const { viewMode, exitToBlogGrid, exitToTerminal } = useView();
   const { history, input, setInput, handleKeyDown, inputRef, bottomRef, focusInput } =
     useTerminal();
   const [time, setTime] = useState("");
@@ -38,6 +38,21 @@ export default function Terminal() {
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    function handleGlobalKeyDown(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+
+      if (viewMode === "blog-article") {
+        exitToBlogGrid();
+      } else if (viewMode === "blog-grid") {
+        exitToTerminal();
+      }
+    }
+
+    document.addEventListener("keydown", handleGlobalKeyDown);
+    return () => document.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [viewMode, exitToBlogGrid, exitToTerminal]);
 
   return (
     <div
