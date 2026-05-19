@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import PixelTitle from "@/components/PixelTitle";
 import OutputRenderer from "@/components/OutputRenderer";
+import BlogArticle from "@/components/blog/BlogArticle";
 import BlogGrid from "@/components/blog/BlogGrid";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useView } from "@/contexts/ViewContext";
@@ -22,7 +23,7 @@ const SOCIAL_LINKS = {
 
 export default function Terminal({ posts }: TerminalProps) {
   const { theme } = useTheme();
-  const { viewMode, openBlogArticle, exitToBlogGrid, exitToTerminal } = useView();
+  const { viewMode, activeSlug, openBlogArticle, exitToBlogGrid, exitToTerminal } = useView();
   const { history, input, setInput, handleKeyDown, inputRef, bottomRef, focusInput } =
     useTerminal();
   const [time, setTime] = useState("");
@@ -379,19 +380,27 @@ export default function Terminal({ posts }: TerminalProps) {
               />
             )}
 
-            {viewMode === "blog-article" && (
-              <div
-                style={{
-                  flex: 1,
-                  overflowY: "auto",
-                  padding: "24px 28px",
-                  color: theme.colors.textMuted,
-                  fontFamily: "inherit",
-                }}
-              >
-                <p>[ Blog article coming in Phase D ]</p>
-              </div>
-            )}
+            {viewMode === "blog-article" && activeSlug && (() => {
+              const post = posts.find((item) => item.slug === activeSlug);
+
+              if (!post) {
+                return (
+                  <div
+                    style={{
+                      flex: 1,
+                      overflowY: "auto",
+                      padding: "24px 28px",
+                      color: theme.colors.textMuted,
+                      fontFamily: "inherit",
+                    }}
+                  >
+                    <p>Post not found</p>
+                  </div>
+                );
+              }
+
+              return <BlogArticle post={post} theme={theme} onBack={exitToBlogGrid} />;
+            })()}
 
             <div
               style={{
