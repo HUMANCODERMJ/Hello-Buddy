@@ -50,7 +50,11 @@ export default function Terminal({ posts }: TerminalProps) {
     function handleGlobalKeyDown(e: KeyboardEvent) {
       if (e.key !== "Escape") return;
 
+      e.preventDefault();
+      e.stopPropagation();
+
       if (viewMode === "blog-article") {
+        window.history.replaceState(null, "", "/");
         exitToBlogGrid();
       } else if (viewMode === "blog-grid") {
         exitToTerminal();
@@ -399,7 +403,16 @@ export default function Terminal({ posts }: TerminalProps) {
                 );
               }
 
-              return <BlogArticle post={post} theme={theme} onBack={exitToBlogGrid} />;
+              return (
+                <BlogArticle
+                  post={post}
+                  theme={theme}
+                  onBack={() => {
+                    window.history.replaceState(null, "", "/");
+                    exitToBlogGrid();
+                  }}
+                />
+              );
             })()}
 
             <div

@@ -270,6 +270,10 @@ export default function BlogArticle({ post, theme, onBack }: BlogArticleProps) {
     return () => observer.disconnect();
   }, [post.slug, headings]);
 
+  function handleBack() {
+    onBack();
+  }
+
   return (
     <div
       style={{
@@ -292,7 +296,7 @@ export default function BlogArticle({ post, theme, onBack }: BlogArticleProps) {
         }}
       >
         <button
-          onClick={onBack}
+          onClick={handleBack}
           style={{
             background: "none",
             border: "none",
