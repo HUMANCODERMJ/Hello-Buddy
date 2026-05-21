@@ -29,6 +29,8 @@ export default function Terminal({ posts }: TerminalProps) {
   const { history, input, setInput, handleKeyDown, inputRef, bottomRef, focusInput } =
     useTerminal();
   const [time, setTime] = useState("");
+  const [visible, setVisible] = useState(true);
+  const [renderedViewMode, setRenderedViewMode] = useState(viewMode);
 
   useEffect(() => {
     function updateTime() {
@@ -66,6 +68,15 @@ export default function Terminal({ posts }: TerminalProps) {
     document.addEventListener("keydown", handleGlobalKeyDown);
     return () => document.removeEventListener("keydown", handleGlobalKeyDown);
   }, [viewMode, exitToBlogGrid, exitToTerminal]);
+
+  useEffect(() => {
+    setVisible(false);
+    const timeout = setTimeout(() => {
+      setRenderedViewMode(viewMode);
+      setVisible(true);
+    }, 150);
+    return () => clearTimeout(timeout);
+  }, [viewMode]);
 
   return (
     <div
@@ -234,7 +245,7 @@ export default function Terminal({ posts }: TerminalProps) {
           </div>
         </div>
 
-        {viewMode === "terminal" && (
+        {renderedViewMode === "terminal" && (
           <div
             style={{
               flex: 1,
@@ -246,7 +257,8 @@ export default function Terminal({ posts }: TerminalProps) {
               fontFamily: '"JetBrains Mono", "Fira Code", "Cascadia Code", monospace',
               fontSize: "0.875rem",
               cursor: "text",
-              transition: "color 0.35s ease",
+              opacity: visible ? 1 : 0,
+              transition: "opacity 0.2s ease, color 0.35s ease",
             }}
             onClick={focusInput}
           >
@@ -368,16 +380,18 @@ export default function Terminal({ posts }: TerminalProps) {
           </div>
         )}
 
-        {(viewMode === "blog-grid" || viewMode === "blog-article") && (
+        {(renderedViewMode === "blog-grid" || renderedViewMode === "blog-article") && (
           <div
             style={{
               flex: 1,
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
+              opacity: visible ? 1 : 0,
+              transition: "opacity 0.2s ease",
             }}
           >
-            {viewMode === "blog-grid" && (
+            {renderedViewMode === "blog-grid" && (
               <BlogGrid
                 posts={posts}
                 theme={theme}
@@ -386,7 +400,7 @@ export default function Terminal({ posts }: TerminalProps) {
               />
             )}
 
-            {viewMode === "blog-article" && activeSlug && (() => {
+            {renderedViewMode === "blog-article" && activeSlug && (() => {
               const post = posts.find((item) => item.slug === activeSlug);
 
               if (!post) {
@@ -416,44 +430,12 @@ export default function Terminal({ posts }: TerminalProps) {
                 />
               );
             })()}
-
-            <div
-              style={{
-                height: "35px",
-                flexShrink: 0,
-                borderTop: `1px solid ${theme.colors.border}`,
-                backgroundColor: theme.colors.bgSecondary,
-                display: "flex",
-                alignItems: "center",
-                padding: "0 16px",
-                gap: "12px",
-              }}
-            >
-              <span
-                style={{
-                  color: theme.colors.prompt,
-                  fontSize: "0.78rem",
-                  fontFamily: "inherit",
-                  userSelect: "none",
-                }}
-              >
-                buddy@portfolio ›
-              </span>
-              <span
-                style={{
-                  color: theme.colors.textMuted,
-                  fontSize: "0.72rem",
-                  fontFamily: "inherit",
-                }}
-              >
-                Press Esc to exit
-              </span>
-            </div>
           </div>
         )}
 
         {viewMode === "terminal" && (
           <div
+            className="terminal-bottom-bar"
             style={{
               height: "36px",
               backgroundColor: theme.colors.bgSecondary,

@@ -47,14 +47,11 @@ export default function BlogGrid({ posts, theme, onSelectPost, onBack }: BlogGri
       </div>
 
       <div
+        className="blog-grid"
         style={{
           flex: 1,
           overflowY: "auto",
           padding: "8px 28px 24px",
-          display: "grid",
-          gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-          gap: "16px",
-          alignContent: "start",
         }}
       >
         {posts.map((post, index) => (

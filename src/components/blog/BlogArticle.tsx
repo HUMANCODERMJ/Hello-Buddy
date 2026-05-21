@@ -241,15 +241,11 @@ function markdownComponents(theme: Theme): Components {
 export default function BlogArticle({ post, theme, onBack }: BlogArticleProps) {
   const router = useRouter();
   const [activeId, setActiveId] = useState("");
-  const [tocOpen, setTocOpen] = useState(true);
+  const [tocOpen, setTocOpen] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth >= 768 : true
+  );
   const articleRef = useRef<HTMLDivElement>(null);
   const headings = useMemo(() => extractHeadings(post.content), [post.content]);
-
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setTocOpen(false);
-    }
-  }, []);
 
   useEffect(() => {
     const container = articleRef.current;
