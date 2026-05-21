@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import PixelTitle from "@/components/PixelTitle";
 import OutputRenderer from "@/components/OutputRenderer";
 import BlogArticle from "@/components/blog/BlogArticle";
@@ -23,6 +24,7 @@ const SOCIAL_LINKS = {
 
 export default function Terminal({ posts }: TerminalProps) {
   const { theme } = useTheme();
+  const router = useRouter();
   const { viewMode, activeSlug, openBlogArticle, exitToBlogGrid, exitToTerminal } = useView();
   const { history, input, setInput, handleKeyDown, inputRef, bottomRef, focusInput } =
     useTerminal();
@@ -54,7 +56,7 @@ export default function Terminal({ posts }: TerminalProps) {
       e.stopPropagation();
 
       if (viewMode === "blog-article") {
-        window.history.replaceState(null, "", "/");
+        router.replace("/");
         exitToBlogGrid();
       } else if (viewMode === "blog-grid") {
         exitToTerminal();
@@ -408,7 +410,7 @@ export default function Terminal({ posts }: TerminalProps) {
                   post={post}
                   theme={theme}
                   onBack={() => {
-                    window.history.replaceState(null, "", "/");
+                    router.replace("/");
                     exitToBlogGrid();
                   }}
                 />

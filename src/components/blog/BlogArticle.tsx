@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -238,6 +239,7 @@ function markdownComponents(theme: Theme): Components {
 }
 
 export default function BlogArticle({ post, theme, onBack }: BlogArticleProps) {
+  const router = useRouter();
   const [activeId, setActiveId] = useState("");
   const [tocOpen, setTocOpen] = useState(true);
   const articleRef = useRef<HTMLDivElement>(null);
@@ -271,6 +273,7 @@ export default function BlogArticle({ post, theme, onBack }: BlogArticleProps) {
   }, [post.slug, headings]);
 
   function handleBack() {
+    router.replace("/");
     onBack();
   }
 
