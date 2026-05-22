@@ -1,7 +1,8 @@
-"use client";
-
+import { getAllPosts } from "@/lib/blog";
 import Terminal from "@/components/Terminal";
 
 export default function Page() {
-  return <Terminal />;
+  const posts = getAllPosts();
+
+  return <Terminal posts={posts} />;
 }

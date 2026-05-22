@@ -1,18 +1,21 @@
 {
-  "name": "Hi Buddy",
-  "username": "buddy",
+  "name": "Manas Jha",
+  "username": "manasjha",
   "hostname": "portfolio",
-  "title": "Full Stack Developer & AI Enthusiast",
-  "tagline": "I build things that live on the internet ✨",
-  "resumeUrl": "https://hibuddy.dev/resume.pdf",
+  "title": "Backend & AI Software Engineer",
+  "tagline": "Building scalable backend systems and AI-powered applications ✨",
+  "resumeUrl": "https://bit.ly/HUMANCODERMJ-SDE-Resume",
   "lines": [
-    "Hey there! 👋 I'm a full-stack developer who loves crafting",
-    "beautiful, performant web experiences.",
+    "Hey there! 👋 I'm Manas — a backend-focused software engineer",
+    "passionate about building reliable APIs, AI systems, and developer tools.",
     "",
-    "I geek out over clean code, great design, and the intersection",
-    "of AI with everyday applications.",
+    "I work with Python, FastAPI, Django, LangChain, RAG pipelines,",
+    "vector databases, and scalable backend architectures.",
     "",
-    "Currently open to exciting opportunities and collaborations.",
-    "Type \"contact\" to reach out — let's build something amazing!"
+    "I enjoy turning complex ideas into clean, production-ready systems",
+    "with a strong focus on performance, simplicity, and usability.",
+    "",
+    "Currently open to backend, AI engineering, and systems-focused roles.",
+    "Type \"contact\" to connect — let's build something impactful!"
   ]
 }

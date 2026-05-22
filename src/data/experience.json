@@ -1,35 +1,43 @@
 {
   "jobs": [
     {
-      "role": "Senior Full Stack Developer",
-      "company": "TechCorp India",
-      "period": "2023 – Present",
-      "location": "Bangalore, India",
+      "role": "Backend Developer Intern",
+      "company": "WhatBytes",
+      "period": "Nov 2025 – Feb 2026",
+      "location": "Remote, India",
       "highlights": [
-        "Led development of a real-time analytics dashboard (50K+ users)",
-        "Reduced API response times by 60% via caching & query optimization",
-        "Mentored 4 junior developers and established code review culture"
+        "Worked on a Python-based AI agent with Redis caching and session management",
+        "Improved AI response quality using prompt chaining techniques",
+        "Contributed to Django and React applications by building features and fixing bugs",
+        "Built and Dockerized 10+ ETL connectors using Python and Airbyte CDK",
+        "Integrated and tested 35+ third-party APIs with OAuth authentication",
+        "Collaborated with a 25-member team to deliver tasks within tight deadlines"
       ]
     },
     {
-      "role": "Full Stack Developer",
-      "company": "StartupXYZ",
-      "period": "2021 – 2023",
-      "location": "Remote",
+      "role": "Machine Learning Intern",
+      "company": "Swapeco Solutions Pvt Ltd.",
+      "period": "Jun 2025 – Aug 2025",
+      "location": "Remote, India",
       "highlights": [
-        "Built an AI-powered recommendation engine using Python & LangChain",
-        "Architected microservices handling 1M+ daily requests",
-        "Shipped 12+ features end-to-end from design to deployment"
+        "Built an AI support agent using Hugging Face, LangGraph, and Pinecone",
+        "Worked on a Fusion-RAG pipeline with hybrid search and re-ranking",
+        "Improved retrieval accuracy by around 50% with better search pipelines",
+        "Gained hands-on experience with LLMs, embeddings, and vector databases",
+        "Collaborated with ML and product teams on a live AI product"
       ]
     },
     {
-      "role": "Frontend Developer Intern",
-      "company": "DigitalAgency",
-      "period": "2020 – 2021",
-      "location": "Delhi, India",
+      "role": "Python Developer (ML-Team Lead)",
+      "company": "Computer Society of India Ghaziabad",
+      "period": "Oct 2023 – Nov 2024",
+      "location": "Ghaziabad, India",
       "highlights": [
-        "Developed responsive UIs for 5 client projects using React",
-        "Improved page load performance by 40% across client sites"
+        "Built backend services using Django and LangChain for AI-based applications",
+        "Worked with a 15-member team on technical projects and documentation",
+        "Helped integrate AI agents into applications used by 100+ users",
+        "Led a frontend development seminar attended by 300+ students",
+        "Gained experience in teamwork, project planning, and technical leadership"
       ]
     }
   ]

@@ -8,13 +8,6 @@
       "url": "github.com/buddy/neuralchat"
     },
     {
-      "name": "CodeCanvas",
-      "description": "Collaborative code editor with AI-assisted pair programming",
-      "tech": ["React", "Monaco Editor", "Node.js", "Claude API"],
-      "status": "live",
-      "url": "github.com/buddy/codecanvas"
-    },
-    {
       "name": "PixelForge",
       "description": "Generative art tool powered by diffusion models & WebGL",
       "tech": ["Three.js", "Stable Diffusion", "FastAPI", "WebGL"],
