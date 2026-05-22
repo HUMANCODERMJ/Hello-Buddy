@@ -5,6 +5,7 @@ import type { HistoryEntry, OutputBlock } from "@/types";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useView } from "@/contexts/ViewContext";
 import { ALL_COMMAND_NAMES, COMMANDS } from "@/lib/commands";
+import { PORTFOLIO } from "@/lib/commands";
 
 function makeId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
@@ -88,7 +89,7 @@ export default function useTerminal() {
       }
 
       if (cmdName === "resume" || cmdName === "cv") {
-        window.open("https://hibuddy.dev/resume.pdf", "_blank", "noopener,noreferrer");
+        window.open(PORTFOLIO.resumeUrl, "_blank", "noopener,noreferrer");
       }
 
       let blocks: OutputBlock[];
