@@ -248,6 +248,12 @@ export default function BlogArticle({ post, theme, onBack }: BlogArticleProps) {
   const headings = useMemo(() => extractHeadings(post.content), [post.content]);
 
   useEffect(() => {
+    if (window.innerWidth < 768) {
+      setTocOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
     const container = articleRef.current;
     if (!container) return;
 

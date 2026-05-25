@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import PixelTitle from "@/components/PixelTitle";
 import OutputRenderer from "@/components/OutputRenderer";
@@ -11,6 +12,7 @@ import { useView } from "@/contexts/ViewContext";
 import useTerminal from "@/hooks/useTerminal";
 import type { BlogPost } from "@/lib/blog";
 import { PORTFOLIO } from "@/lib/commands";
+import { THEMES, type ThemeName } from "@/lib/themes";
 
 interface TerminalProps {
   posts: BlogPost[];
@@ -23,14 +25,17 @@ const SOCIAL_LINKS = {
 };
 
 export default function Terminal({ posts }: TerminalProps) {
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const router = useRouter();
   const { viewMode, activeSlug, openBlogArticle, exitToBlogGrid, exitToTerminal } = useView();
   const { history, input, setInput, handleKeyDown, inputRef, bottomRef, focusInput } =
     useTerminal();
   const [time, setTime] = useState("");
+  const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [renderedViewMode, setRenderedViewMode] = useState(viewMode);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const hasMountedRef = useRef(false);
 
   useEffect(() => {
     function updateTime() {
@@ -70,13 +75,31 @@ export default function Terminal({ posts }: TerminalProps) {
   }, [viewMode, exitToBlogGrid, exitToTerminal]);
 
   useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
     setVisible(false);
     const timeout = setTimeout(() => {
       setRenderedViewMode(viewMode);
-      setVisible(true);
+      requestAnimationFrame(() => setVisible(true));
     }, 150);
     return () => clearTimeout(timeout);
   }, [viewMode]);
+
+  useEffect(() => {
+    if (!themeDropdownOpen) return;
+
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setThemeDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [themeDropdownOpen]);
 
   return (
     <div
@@ -143,30 +166,120 @@ export default function Terminal({ posts }: TerminalProps) {
             >
               terminal
             </span>
-            <div
-              style={{
-                padding: "2px 10px",
-                borderRadius: "20px",
-                border: `1px solid ${theme.colors.badgeBorder}`,
-                backgroundColor: theme.colors.badgeBg,
-                color: theme.colors.badgeText,
-                fontSize: "0.68rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-              }}
-            >
-              <span
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  backgroundColor: theme.colors.badgeText,
-                  display: "inline-block",
-                  flexShrink: 0,
+            <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setThemeDropdownOpen((prev) => !prev);
                 }}
-              />
-              {theme.label}
+                style={{
+                  padding: "2px 10px",
+                  borderRadius: "20px",
+                  border: `1px solid ${theme.colors.badgeBorder}`,
+                  backgroundColor: theme.colors.badgeBg,
+                  color: theme.colors.badgeText,
+                  fontSize: "0.68rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                  cursor: "pointer",
+                  userSelect: "none",
+                  transition: "opacity 0.15s ease",
+                }}
+              >
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    backgroundColor: theme.colors.badgeText,
+                    display: "inline-block",
+                    flexShrink: 0,
+                  }}
+                />
+                {theme.label}
+              </div>
+
+              {themeDropdownOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 6px)",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    backgroundColor: theme.colors.bgSecondary,
+                    border: `1px solid ${theme.colors.border}`,
+                    borderRadius: "8px",
+                    padding: "6px",
+                    zIndex: 100,
+                    minWidth: "160px",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  {Object.values(THEMES).map((t) => (
+                    <div
+                      key={t.name}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setTheme(t.name as ThemeName);
+                        setThemeDropdownOpen(false);
+                      }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        padding: "6px 10px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        backgroundColor:
+                          theme.name === t.name ? theme.colors.selectionBg : "transparent",
+                        transition: "background-color 0.15s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (theme.name !== t.name) {
+                          e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (theme.name !== t.name) {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                        }
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: "50%",
+                          backgroundColor: t.colors.primary,
+                          flexShrink: 0,
+                          border: `1px solid ${t.colors.badgeBorder}`,
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: "0.72rem",
+                          fontFamily: "inherit",
+                          color: theme.name === t.name ? theme.colors.text : theme.colors.textMuted,
+                        }}
+                      >
+                        {t.label}
+                      </span>
+                      {theme.name === t.name && (
+                        <span
+                          style={{
+                            marginLeft: "auto",
+                            color: theme.colors.badgeText,
+                            fontSize: "0.65rem",
+                          }}
+                        >
+                          ✓
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
