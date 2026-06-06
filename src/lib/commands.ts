@@ -3,7 +3,7 @@ import skillsData from "@/data/skills.json";
 import experienceData from "@/data/experience.json";
 import projectsData from "@/data/projects.json";
 import contactData from "@/data/contact.json";
-import { OutputBlock, OutputLine } from "@/types";
+import { OutputBlock, OutputLine, type Availability } from "@/types";
 
 export const PORTFOLIO = {
   username: aboutData.username,
@@ -56,6 +56,7 @@ export const COMMANDS: Record<string, Command> = {
         { text: "  projects     →  Things I've built", style: "default" },
         { text: "  contact      →  Get in touch", style: "default" },
         { text: "  resume       →  Download my CV", style: "default" },
+        { text: "  hire         →  My availability status", style: "default" },
         { text: "  theme        →  Switch color theme", style: "default" },
         { text: "  clear        →  Clear the terminal", style: "default" },
         { text: "  whoami       →  Quick intro", style: "default" },
@@ -186,6 +187,51 @@ export const COMMANDS: Record<string, Command> = {
         boxBot(),
       ]),
     ],
+  },
+  hire: {
+    name: "hire",
+    description: "My availability and what I am looking for",
+    aliases: ["available"],
+    execute: () => {
+      const a = aboutData.availability as Availability;
+      const isOpen = a.status === "open";
+
+      return [
+        block([
+          boxTop("AVAILABILITY"),
+          empty(),
+          {
+            text: `  Status: ${a.statusText}`,
+            style: isOpen ? "success" : "error",
+          },
+          empty(),
+          { text: "  Looking for:", style: "secondary" },
+          ...a.type.map((t) => ({
+            text: `    ·  ${t}`,
+            style: "default" as const,
+          })),
+          empty(),
+          { text: "  Preferred roles:", style: "secondary" },
+          ...a.preferredRoles.map((r) => ({
+            text: `    ·  ${r}`,
+            style: "default" as const,
+          })),
+          empty(),
+          {
+            text: `  Stack:  ${a.preferredStack.join("  ·  ")}`,
+            style: "dim" as const,
+          },
+          empty(),
+          { text: `  Location:  ${a.location}`, style: "dim" as const },
+          { text: `  Notice:    ${a.notice}`, style: "dim" as const },
+          empty(),
+          { text: "  Reach out:", style: "secondary" },
+          { text: `    ${a.email}`, style: "url" as const },
+          empty(),
+          boxBot(),
+        ]),
+      ];
+    },
   },
   whoami: {
     name: "whoami",

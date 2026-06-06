@@ -5,6 +5,20 @@
   "title": "Backend & AI Software Engineer",
   "tagline": "Building scalable backend systems and AI-powered applications ✨",
   "resumeUrl": "https://bit.ly/HUMANCODERMJ-SDE-Resume",
+  "availability": {
+    "status": "open",
+    "statusText": "Open to opportunities",
+    "type": ["Full-time", "Contract", "Freelance"],
+    "notice": "2 weeks",
+    "preferredRoles": [
+      "Senior Full Stack Developer",
+      "Full Stack Developer",
+      "AI Engineer"
+    ],
+    "preferredStack": ["Next.js", "Node.js", "Python", "TypeScript"],
+    "location": "Remote / New Delhi, India",
+    "email": "hello@hibuddy.dev"
+  },
   "lines": [
     "Hey there! 👋 I'm Manas — a backend-focused software engineer",
     "passionate about building reliable APIs, AI systems, and developer tools.",

@@ -19,6 +19,17 @@ export interface OutputBlock {
   lines: OutputLine[];
 }
 
+export interface Availability {
+  status: "open" | "busy" | "not-looking";
+  statusText: string;
+  type: string[];
+  notice: string;
+  preferredRoles: string[];
+  preferredStack: string[];
+  location: string;
+  email: string;
+}
+
 // One entry in the terminal's visible history
 export type HistoryEntry =
   | { id: string; kind: "banner" }
