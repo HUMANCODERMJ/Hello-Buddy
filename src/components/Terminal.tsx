@@ -157,15 +157,6 @@ export default function Terminal({ posts }: TerminalProps) {
           </span>
 
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span
-              style={{
-                color: theme.colors.textMuted,
-                fontSize: "0.78rem",
-                letterSpacing: "0.04em",
-              }}
-            >
-              terminal
-            </span>
             <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
               <div
                 onClick={(e) => {
