@@ -11,6 +11,7 @@ export interface TocHeading {
 export interface ToCProps {
   headings: TocHeading[];
   activeId: string;
+  setActiveId: (id: string) => void;
   theme: Theme;
   isOpen: boolean;
   onToggle: () => void;
@@ -36,6 +37,7 @@ export function extractHeadings(markdown: string) {
 export default function TableOfContents({
   headings,
   activeId,
+  setActiveId,
   theme,
   isOpen,
   onToggle,
@@ -97,6 +99,11 @@ export default function TableOfContents({
           <a
             key={heading.id}
             href={`#${heading.id}`}
+            onClick={(event) => {
+              event.preventDefault();
+              setActiveId(heading.id);
+              document.getElementById(heading.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
             style={{
               display: "block",
               fontSize: "0.74rem",
