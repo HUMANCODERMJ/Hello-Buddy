@@ -6,13 +6,14 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useView } from "@/contexts/ViewContext";
 import { ALL_COMMAND_NAMES, COMMANDS } from "@/lib/commands";
 import { PORTFOLIO } from "@/lib/commands";
+import { THEMES, type ThemeName } from "@/lib/themes";
 
 function makeId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
 export default function useTerminal() {
-  const { theme } = useTheme();
+  const { setTheme } = useTheme();
   const { viewMode, openBlogGrid, exitToTerminal, exitToBlogGrid } = useView();
 
   const [history, setHistory] = useState<HistoryEntry[]>([
@@ -74,15 +75,29 @@ export default function useTerminal() {
       }
 
       if (cmdName === "theme" && args.length > 0) {
-        const blocks: OutputBlock[] = [
-          {
-            lines: [
-              { text: "  Theme switching coming soon!", style: "secondary" },
-              { text: `  Currently running: ${theme.name}`, style: "muted" },
-            ],
-          },
-        ];
-        pushOutput(blocks);
+        const requestedTheme = args[0] as ThemeName;
+
+        if (THEMES[requestedTheme]) {
+          setTheme(requestedTheme);
+          pushOutput([
+            {
+              lines: [
+                { text: `  Theme switched to: ${THEMES[requestedTheme].label}`, style: "secondary" },
+                { text: `  ${THEMES[requestedTheme].description}`, style: "muted" },
+              ],
+            },
+          ]);
+        } else {
+          pushOutput([
+            {
+              lines: [
+                { text: `  Unknown theme: ${requestedTheme}`, style: "error" },
+                { text: `  Available: pink · green · cyan · amber · red · white`, style: "muted" },
+              ],
+            },
+          ]);
+        }
+
         setCmdHistory((prev) => [trimmed, ...prev]);
         resetInput();
         return;
@@ -112,7 +127,7 @@ export default function useTerminal() {
       setCmdHistory((prev) => [trimmed, ...prev]);
       resetInput();
     },
-    [theme.name]
+    [setTheme]
   );
 
   const handleKeyDown = useCallback(

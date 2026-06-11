@@ -3,7 +3,7 @@ import skillsData from "@/data/skills.json";
 import experienceData from "@/data/experience.json";
 import projectsData from "@/data/projects.json";
 import contactData from "@/data/contact.json";
-import { OutputBlock, OutputLine } from "@/types";
+import { OutputBlock, OutputLine, type Availability } from "@/types";
 
 export const PORTFOLIO = {
   username: aboutData.username,
@@ -56,7 +56,8 @@ export const COMMANDS: Record<string, Command> = {
         { text: "  projects     →  Things I've built", style: "default" },
         { text: "  contact      →  Get in touch", style: "default" },
         { text: "  resume       →  Download my CV", style: "default" },
-        { text: "  theme        →  Switch color theme (coming soon)", style: "default" },
+        { text: "  hire         →  My availability status", style: "default" },
+        { text: "  theme        →  Switch color theme", style: "default" },
         { text: "  clear        →  Clear the terminal", style: "default" },
         { text: "  whoami       →  Quick intro", style: "default" },
         empty(),
@@ -187,6 +188,51 @@ export const COMMANDS: Record<string, Command> = {
       ]),
     ],
   },
+  hire: {
+    name: "hire",
+    description: "My availability and what I am looking for",
+    aliases: ["available"],
+    execute: () => {
+      const a = aboutData.availability as Availability;
+      const isOpen = a.status === "open";
+
+      return [
+        block([
+          boxTop("AVAILABILITY"),
+          empty(),
+          {
+            text: `  Status: ${a.statusText}`,
+            style: isOpen ? "success" : "error",
+          },
+          empty(),
+          { text: "  Looking for:", style: "secondary" },
+          ...a.type.map((t) => ({
+            text: `    ·  ${t}`,
+            style: "default" as const,
+          })),
+          empty(),
+          { text: "  Preferred roles:", style: "secondary" },
+          ...a.preferredRoles.map((r) => ({
+            text: `    ·  ${r}`,
+            style: "default" as const,
+          })),
+          empty(),
+          {
+            text: `  Stack:  ${a.preferredStack.join("  ·  ")}`,
+            style: "dim" as const,
+          },
+          empty(),
+          { text: `  Location:  ${a.location}`, style: "dim" as const },
+          { text: `  Notice:    ${a.notice}`, style: "dim" as const },
+          empty(),
+          { text: "  Reach out:", style: "secondary" },
+          { text: `    ${a.email}`, style: "url" as const },
+          empty(),
+          boxBot(),
+        ]),
+      ];
+    },
+  },
   whoami: {
     name: "whoami",
     description: "Quick intro",
@@ -200,19 +246,24 @@ export const COMMANDS: Record<string, Command> = {
   },
   theme: {
     name: "theme",
-    description: "Switch color theme",
+    description: "Switch color theme — usage: theme <name>",
     execute: () => [
       block([
         boxTop("THEMES"),
         empty(),
         { text: "  Usage: theme <name>", style: "default" },
         empty(),
-        { text: "  pink    →  Pink/Purple  (active)", style: "secondary" },
-        { text: "  green   →  Hacker Green          (coming soon)", style: "muted" },
-        { text: "  cyan    →  Cyberpunk Cyan         (coming soon)", style: "muted" },
-        { text: "  amber   →  Retro Amber            (coming soon)", style: "muted" },
-        { text: "  red     →  Blood Red              (coming soon)", style: "muted" },
-        { text: "  white   →  Minimal Light          (coming soon)", style: "muted" },
+        { text: "  pink    →  Pink/Purple  (default)", style: "secondary" },
+        { text: "  green   →  Hacker Green", style: "secondary" },
+        { text: "  cyan    →  Cyberpunk Cyan", style: "secondary" },
+        { text: "  amber   →  Retro Amber", style: "secondary" },
+        { text: "  red     →  Blood Red", style: "secondary" },
+        { text: "  white   →  Minimal Light", style: "secondary" },
+        empty(),
+        {
+          text: "  Tip: click the theme badge in the title bar to switch visually",
+          style: "muted",
+        },
         empty(),
         boxBot(),
       ]),
